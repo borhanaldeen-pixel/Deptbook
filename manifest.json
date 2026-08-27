@@ -1,0 +1,33 @@
+{
+  "name": "دفتر الديون اليمني",
+  "short_name": "دفتر الديون",
+  "description": "نظام سريع لإدارة الديون بالريال اليمني",
+  "start_url": "./debtbook.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2fbf9",
+  "theme_color": "#0d9488",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
