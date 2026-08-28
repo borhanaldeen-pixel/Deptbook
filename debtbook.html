@@ -4,17 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0D9488">
-<meta name="description" content="نظام سريع لإدارة الديون بالريال اليمني">
-<meta name="application-name" content="دفتر الديون اليمني">
+<meta name="description" content="نظام سريع لإدارة الديون بالريال اليمني - يعمل بدون إنترنت">
+<meta name="application-name" content="دفتر الديون">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="دفتر الديون">
 <link rel="manifest" href="./manifest.json">
-<link rel="icon" href="./favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png">
-<title>دفتر الديون اليمني - واجهة حديثة</title>
+<title>دفتر الديون اليمني</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700;800;900&display=swap');
 :root{
   --teal-50:#f0fdfa;
   --teal-100:#ccfbf1;
@@ -30,279 +27,406 @@
   --ink-700:#3a5a56;
   --ink-500:#6b8a86;
   --danger:#e11d48;
+  --danger-light:#fee2e2;
   --bg-1:#f2fbf9;
   --bg-2:#e6f6f2;
   --card:#ffffff;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Cairo,sans-serif;background:
+body{
+  margin:0;
+  font-family:system-ui, -apple-system, 'Segoe UI', Tahoma, 'Cairo', 'Tajawal', sans-serif;
+  background:
     radial-gradient(1200px 600px at 100% -10%, #d7f4ee 0%, transparent 60%),
     radial-gradient(900px 500px at -10% 110%, #fdf3d9 0%, transparent 55%),
     linear-gradient(160deg,var(--bg-1) 0%,var(--bg-2) 100%);
   background-attachment:fixed;
-  color:var(--ink-900);min-height:100vh}
+  color:var(--ink-900);
+  min-height:100vh;
+}
 button,input{font:inherit}
 .app{max-width:760px;margin:auto;padding:18px 15px 40px}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .brand{display:flex;align-items:center;gap:12px;background:linear-gradient(145deg,#ffffff,#f4fbfa);padding:12px 18px;border-radius:20px;box-shadow:6px 6px 0px rgba(13,148,136,0.10),0 12px 30px rgba(13,148,136,0.08);border-right:5px solid var(--teal-500)}
-.brand-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--teal-400),var(--teal-700));display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 6px 14px rgba(13,148,136,0.35);flex-shrink:0}
-.brand b{font-size:21px;font-weight:900;color:var(--ink-900);letter-spacing:-0.5px;display:block}
+.brand-icon{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--teal-400),var(--teal-700));display:flex;align-items:center;justify-content:center;font-size:19px;color:#fff;box-shadow:0 6px 14px rgba(13,148,136,0.35);flex-shrink:0}
+.brand b{font-size:19px;font-weight:900;color:var(--ink-900);letter-spacing:-0.5px;display:block}
 .brand small{display:block;color:var(--ink-500);font-size:11px;font-weight:700}
-.icon-btn{width:48px;height:48px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--teal-500),var(--teal-700));color:#fff;font-size:22px;box-shadow:0 8px 20px rgba(13,148,136,0.30);cursor:pointer;transition:transform 0.2s}
+.icon-btn{width:46px;height:46px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--teal-500),var(--teal-700));color:#fff;font-size:22px;box-shadow:0 8px 20px rgba(13,148,136,0.30);cursor:pointer;transition:transform 0.2s}
 .icon-btn:active{transform:scale(0.95)}
-.hero{background:linear-gradient(135deg,var(--teal-500),var(--teal-700) 60%, var(--teal-900));color:#fff;border-radius:26px;padding:26px;box-shadow:8px 8px 0 rgba(13,148,136,0.18),0 20px 40px rgba(13,148,136,0.22);margin-bottom:24px;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.14) 0%,transparent 60%);pointer-events:none}
-.hero::before{content:'';position:absolute;bottom:-30%;right:-15%;width:60%;height:140%;background:radial-gradient(circle,rgba(251,191,36,0.20) 0%,transparent 65%);pointer-events:none}
-.hero h1{margin:0 0 6px;font-size:26px;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.15);position:relative}
-.hero p{margin:0;opacity:.88;font-size:13px;position:relative}
-.voice{width:100%;margin-top:22px;border:0;border-radius:20px;padding:20px 14px;background:#fff;color:var(--teal-700);font-weight:900;font-size:20px;box-shadow:0 12px 25px rgba(0,0,0,0.12);cursor:pointer;transition:all 0.3s;position:relative}
-.voice.listening{background:linear-gradient(135deg,var(--gold-400),var(--gold-600));color:#fff;animation:pulse 1s infinite;box-shadow:0 12px 30px rgba(245,158,11,0.4)}
+.hero{background:linear-gradient(135deg,var(--teal-500),var(--teal-700) 60%, var(--teal-900));color:#fff;border-radius:26px;padding:24px;box-shadow:8px 8px 0 rgba(13,148,136,0.18),0 20px 40px rgba(13,148,136,0.22);margin-bottom:24px;position:relative;overflow:hidden}
+.hero h1{margin:0 0 6px;font-size:24px;font-weight:900;text-shadow:0 2px 10px rgba(0,0,0,0.15)}
+.hero p{margin:0;opacity:.9;font-size:13px;font-weight:600}
+.voice{width:100%;margin-top:18px;border:0;border-radius:20px;padding:16px 14px;background:#fff;color:var(--teal-700);font-weight:900;font-size:17px;box-shadow:0 12px 25px rgba(0,0,0,0.12);cursor:pointer;transition:all 0.3s}
+.voice.listening{background:linear-gradient(135deg,var(--gold-400),var(--gold-600));color:#fff;animation:pulse 1s infinite}
 @keyframes pulse{50%{transform:scale(.98)}}
-.voice small{display:block;font-size:12px;color:var(--ink-500);margin-top:5px;font-weight:600}
+.voice small{display:block;font-size:11px;color:var(--ink-500);margin-top:4px;font-weight:600}
 .voice.listening small{color:#fff7e0}
 .quick{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
-.quick button{border:0;background:#fff;border-radius:18px;padding:16px;box-shadow:6px 6px 0 rgba(15,42,40,0.04),0 10px 25px rgba(15,42,40,0.06);cursor:pointer;font-weight:800;color:var(--ink-700);transition:transform 0.2s}
+.quick button{border:0;background:#fff;border-radius:18px;padding:15px;box-shadow:6px 6px 0 rgba(15,42,40,0.04),0 10px 25px rgba(15,42,40,0.06);cursor:pointer;font-weight:800;color:var(--ink-700);font-size:14px;transition:transform 0.2s}
 .quick button:active{transform:translateY(2px)}
 .panel{background:var(--card);border-radius:24px;padding:22px;box-shadow:8px 8px 0 rgba(20,120,110,0.06),0 18px 40px rgba(15,42,40,0.06);margin-bottom:22px}
-.panel h2, .box h2{font-size:19px;margin:0 0 18px;padding:12px 16px;border-radius:14px;background:linear-gradient(145deg,#ffffff,var(--teal-50));border-right:6px solid var(--teal-500);box-shadow:5px 5px 0px rgba(20,184,166,0.14),0 8px 15px rgba(20,184,166,0.06);color:var(--ink-900)}
+.panel h2, .box h2{font-size:17px;margin:0 0 16px;padding:12px 16px;border-radius:14px;background:linear-gradient(145deg,#ffffff,var(--teal-50));border-right:6px solid var(--teal-500);box-shadow:5px 5px 0px rgba(20,184,166,0.14);color:var(--ink-900)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.stat{padding:16px;border-radius:16px;background:var(--teal-50);box-shadow:inset 0 2px 5px rgba(0,0,0,0.02)}
+.stat{padding:14px;border-radius:16px;background:var(--teal-50);box-shadow:inset 0 2px 5px rgba(0,0,0,0.02)}
 .stat span{font-size:11px;color:var(--ink-500);font-weight:700}
-.stat b{display:block;font-size:19px;margin-top:4px;color:var(--ink-900)}
+.stat b{display:block;font-size:17px;margin-top:4px;color:var(--ink-900)}
 .stat.gold{background:#fff8e6}
 .stat.gold b{color:var(--gold-600)}
 .stat.danger{background:#fef1f3}
 .stat.danger b{color:var(--danger)}
-.search{width:100%;padding:14px;border:2px solid var(--teal-100);border-radius:14px;outline:0;margin-bottom:16px;font-weight:600;transition:border-color 0.3s;box-shadow:inset 0 2px 4px rgba(0,0,0,0.02);background:#fbfffe}
+.search{width:100%;padding:13px;border:2px solid var(--teal-100);border-radius:14px;outline:0;margin-bottom:16px;font-weight:600;background:#fbfffe}
 .search:focus{border-color:var(--teal-500)}
-.debt{padding:18px;border:2px solid var(--teal-50);border-radius:20px;margin-bottom:14px;background:#fff;box-shadow:0 6px 15px rgba(15,42,40,0.03);display:flex;flex-direction:column;gap:14px;transition:transform 0.2s}
-.debt:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(15,42,40,0.07)}
-.debt-info{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.debt b{display:block;font-size:16px;color:var(--ink-900)}
-.debt small{color:var(--ink-500);font-weight:600;font-size:12px}
+.debt{padding:16px;border:2px solid var(--teal-50);border-radius:20px;margin-bottom:14px;background:#fff;box-shadow:0 6px 15px rgba(15,42,40,0.03);display:flex;flex-direction:column;gap:12px}
+.debt-info{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.debt b{font-size:16px;color:var(--ink-900)}
+.debt small{color:var(--ink-500);font-weight:600;font-size:12px;display:block;margin-top:2px}
 .amount{text-align:left}
-.amount b{font-size:18px;color:var(--ink-900)}
+.amount b{font-size:17px;color:var(--ink-900)}
 .remaining{color:var(--danger);font-size:12px;font-weight:700}
-.pay-btn{background:linear-gradient(135deg,var(--gold-400),var(--gold-600));color:#fff;border:none;padding:12px;border-radius:14px;font-weight:800;cursor:pointer;box-shadow:0 6px 15px rgba(245,158,11,0.30);width:100%;transition:0.2s}
-.pay-btn:active{transform:scale(0.98)}
-.debt.closed{background:var(--teal-50);opacity:0.8;border-color:var(--teal-100)}
-.debt.closed b{text-decoration:line-through;color:var(--ink-500)}
-.badge{text-align:center;background:var(--teal-100);color:var(--teal-700);padding:12px;border-radius:14px;font-weight:800;font-size:13px;box-shadow:inset 0 2px 4px rgba(0,0,0,0.04)}
-.empty{text-align:center;color:var(--ink-500);padding:40px;font-weight:700;font-size:16px}
-.modal{display:none;position:fixed;inset:0;background:rgba(15,42,40,0.55);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:20px;z-index:10}
+.actions{display:flex;gap:8px}
+.pay-btn{background:linear-gradient(135deg,var(--gold-400),var(--gold-600));color:#fff;border:none;padding:10px;border-radius:12px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(245,158,11,0.25);flex:2;transition:0.2s}
+.delete-btn{background:var(--danger-light);color:var(--danger);border:1px solid rgba(225,29,72,0.2);padding:10px;border-radius:12px;font-weight:800;cursor:pointer;flex:1;transition:0.2s}
+.delete-btn:active, .pay-btn:active{transform:scale(0.97)}
+.debt.closed{background:var(--teal-50);border-color:var(--teal-100)}
+.debt.closed .debt-info b{text-decoration:line-through;color:var(--ink-500)}
+.badge{text-align:center;background:var(--teal-100);color:var(--teal-700);padding:10px;border-radius:12px;font-weight:800;font-size:13px;flex:2}
+.empty{text-align:center;color:var(--ink-500);padding:30px;font-weight:700;font-size:15px}
+.modal{display:none;position:fixed;inset:0;background:rgba(15,42,40,0.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;z-index:100}
 .modal.show{display:flex}
-.box{background:#fff;border-radius:26px;padding:24px;width:100%;max-width:480px;box-shadow:12px 12px 0 rgba(13,148,136,0.16),0 30px 60px rgba(15,42,40,0.28)}
-.box label{font-size:12px;color:var(--ink-700);font-weight:800;display:block;margin:12px 0 6px}
-.box input{width:100%;padding:14px;border:2px solid var(--teal-100);border-radius:14px;outline:0;font-weight:700;transition:0.3s;background:#fbfffe}
+.box{background:#fff;border-radius:24px;padding:22px;width:100%;max-width:440px;box-shadow:0 25px 50px rgba(0,0,0,0.25)}
+.box label{font-size:12px;color:var(--ink-700);font-weight:800;display:block;margin:10px 0 5px}
+.box input{width:100%;padding:12px;border:2px solid var(--teal-100);border-radius:12px;outline:0;font-weight:700;background:#fbfffe}
 .box input:focus{border-color:var(--teal-500)}
-.row{display:flex;gap:12px;margin-top:22px}
-.row button{flex:1;border:0;padding:14px;border-radius:14px;font-weight:800;cursor:pointer;transition:transform 0.2s}
-.row button:active{transform:scale(0.96)}
-.primary{background:linear-gradient(135deg,var(--teal-500),var(--teal-700));color:#fff;box-shadow:0 8px 20px rgba(13,148,136,0.30)}
-.secondary{background:var(--teal-50);color:var(--ink-700);box-shadow:0 4px 10px rgba(0,0,0,0.04)}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink-900);color:#fff;padding:14px 22px;border-radius:16px;display:none;z-index:30;font-size:13px;font-weight:700;box-shadow:0 10px 25px rgba(0,0,0,0.2)}
-@media(max-width:500px){.stats{grid-template-columns:1fr}.debt-info{align-items:flex-start}.hero h1{font-size:22px}}
+.row{display:flex;gap:10px;margin-top:20px}
+.row button{flex:1;border:0;padding:12px;border-radius:12px;font-weight:800;cursor:pointer}
+.primary{background:linear-gradient(135deg,var(--teal-500),var(--teal-700));color:#fff}
+.secondary{background:var(--teal-50);color:var(--ink-700)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink-900);color:#fff;padding:12px 20px;border-radius:14px;display:none;z-index:200;font-size:13px;font-weight:700}
+@media(max-width:500px){.stats{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
 <div class="app">
-<header class="header">
-  <div class="brand"><div class="brand-icon">💳</div><div><b>دفتر الديون</b><small>الريال اليمني • سريع وبسيط</small></div></div>
-  <button class="icon-btn" onclick="openManual()" aria-label="إضافة دين">＋</button>
-</header>
-
-<section class="hero">
-  <h1>إضافة دين بسرعة</h1>
-  <p>للاستخدام الصوتي: قل مثلاً «أضف أحمد 5000» ثم راجع البيانات.</p>
-  <button id="voiceBtn" class="voice" onclick="startVoice()">🎙️ إضافة بالصوت
-    <small>اضغط وتحدث بوضوح</small>
-  </button>
-</section>
-
-<div class="quick">
-  <button id="installBtn" style="display:none;background:#fff8e6;color:#b45309;box-shadow:6px 6px 0 rgba(180,83,9,0.1)" onclick="installApp()">📲 تثبيت التطبيق</button>
-  <button onclick="openManual()">➕ إضافة يدوية</button>
-  <button onclick="showDebts()">📋 كل الديون</button>
-</div>
-
-<section class="panel">
-  <h2>📊 ملخص الحسابات النشطة</h2>
-  <div class="stats">
-    <div class="stat"><span>إجمالي الديون</span><b id="sDebt">0 ر.ي</b></div>
-    <div class="stat gold"><span>المدفوع</span><b id="sPaid">0 ر.ي</b></div>
-    <div class="stat danger"><span>المتبقي</span><b id="sRemain">0 ر.ي</b></div>
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">﷼</div>
+      <div>
+        <b>دفتر الديون</b>
+        <small>محلي ويعمل بدون إنترنت</small>
+      </div>
+    </div>
+    <button class="icon-btn" onclick="openAddModal()" title="إضافة دين">+</button>
   </div>
-</section>
 
-<section class="panel" id="listPanel">
-  <h2>📋 سجل الديون</h2>
-  <input class="search" id="search" placeholder="ابحث باسم المدين..." oninput="render()">
-  <div id="list"></div>
-</section>
+  <div class="hero">
+    <h1>سجل ديونك بكل سهولة</h1>
+    <p>بالريال اليمني - حفظ تلقائي ومحلي على جهازك 100%</p>
+    <button class="voice" id="voiceBtn" onclick="toggleVoice()">
+      🎤 تسجيل صوتي سريع
+      <small>مثال: "سجل على علي 15000 حق القات"</small>
+    </button>
+  </div>
+
+  <div class="quick">
+    <button onclick="openAddModal()">➕ تسجيل دين جديد</button>
+    <button onclick="filterDebts('remaining')">⏳ الديون المتبقية</button>
+  </div>
+
+  <div class="panel">
+    <h2>الإحصائيات العامة (ريال)</h2>
+    <div class="stats">
+      <div class="stat">
+        <span>إجمالي الديون</span>
+        <b id="statTotal">0</b>
+      </div>
+      <div class="stat gold">
+        <span>المبلغ المسدد</span>
+        <b id="statPaid">0</b>
+      </div>
+      <div class="stat danger">
+        <span>المبلغ المتبقي</span>
+        <b id="statRemaining">0</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>قائمة الديون</h2>
+    <input type="text" class="search" id="searchInput" placeholder="🔍 بحث بالاسم أو الملاحظة..." oninput="renderDebts()">
+    <div id="debtsContainer"></div>
+  </div>
 </div>
 
-<!-- إضافة دين يدوي -->
-<div class="modal" id="manualModal">
-<div class="box">
-<h2>➕ تسجيل دين جديد</h2>
-<label>اسم المدين</label><input id="name" placeholder="مثال: أحمد">
-<label>المبلغ بالريال اليمني</label><input id="amount" type="number" min="1" placeholder="5000">
-<label>تاريخ الاستحقاق (اختياري)</label><input id="due" type="date">
-<div class="row"><button class="primary" onclick="saveManual()">حفظ الدين</button><button class="secondary" onclick="closeManual()">إلغاء</button></div>
-</div>
+<!-- Add Modal -->
+<div class="modal" id="addModal">
+  <div class="box">
+    <h2>إضافة دين جديد</h2>
+    <label>اسم الشخص / العميل *</label>
+    <input type="text" id="addName" placeholder="مثال: أحمد مقبل">
+    <label>المبلغ الإجمالي (ريال يمني) *</label>
+    <input type="number" id="addAmount" placeholder="مثال: 25000">
+    <label>ملاحظة أو تفاصيل الدين</label>
+    <input type="text" id="addNotes" placeholder="مثال: حساب البقالة">
+    <div class="row">
+      <button class="primary" onclick="saveNewDebt()">حفظ الدين</button>
+      <button class="secondary" onclick="closeModal('addModal')">إلغاء</button>
+    </div>
+  </div>
 </div>
 
-<!-- سداد / شطب دين -->
+<!-- Pay Modal -->
 <div class="modal" id="payModal">
-<div class="box">
-<h2>💳 سداد وشطب الدين</h2>
-<label>المبلغ المدفوع (ريال يمني)</label>
-<input type="number" id="payInput" min="1">
-<input type="hidden" id="payId">
-<div class="row">
-  <button class="primary" style="background:linear-gradient(135deg,#fbbf24,#d97706);box-shadow:0 8px 20px rgba(245,158,11,0.35)" onclick="confirmPayment()">تأكيد السداد</button>
-  <button class="secondary" onclick="closePayModal()">إلغاء</button>
-</div>
-</div>
-</div>
-
-<!-- تأكيد صوتي -->
-<div class="modal" id="voiceModal">
-<div class="box">
-<h2>🎙️ تأكيد الدين</h2>
-<p id="heard" style="color:var(--ink-500);font-weight:bold"></p>
-<label>اسم المدين</label><input id="vName">
-<label>المبلغ بالريال اليمني</label><input id="vAmount" type="number" min="1">
-<div class="row"><button class="primary" onclick="saveVoice()">تأكيد وحفظ</button><button class="secondary" onclick="closeVoice()">إلغاء</button></div>
-</div>
+  <div class="box">
+    <h2>تسجيل دفعة سداد</h2>
+    <p id="payModalInfo" style="font-size:13px; color:var(--ink-700); font-weight:700;"></p>
+    <label>مبلغ الدفعة (ريال يمني) *</label>
+    <input type="number" id="payAmount" placeholder="أدخل المبلغ المسدد">
+    <input type="hidden" id="payDebtId">
+    <div class="row">
+      <button class="primary" onclick="confirmPayment()">تأكيد السداد</button>
+      <button class="secondary" onclick="closeModal('payModal')">إلغاء</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='quickYemeniDebts';
-let debts=JSON.parse(localStorage.getItem(KEY)||'[]');
-const $=id=>document.getElementById(id);
-const money=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2})+' ر.ي';
-const today=()=>new Date().toISOString().slice(0,10);
-function save(){localStorage.setItem(KEY,JSON.stringify(debts));render();}
-function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
+// --- LOCAL STORAGE MANAGER ---
+const STORAGE_KEY = 'yemeni_debts_local_v1';
 
-function openManual(){$('manualModal').classList.add('show');$('name').focus()}
-function closeManual(){$('manualModal').classList.remove('show')}
-function saveManual(){
- const n=$('name').value.trim(), a=Number($('amount').value);
- if(!n||!a||a<=0)return toast('أدخل الاسم والمبلغ');
- debts.unshift({id:Date.now().toString(),name:n,amount:a,paid:0,date:today(),dueDate:$('due').value,payments:[],closed:false});
- save();closeManual();$('name').value='';$('amount').value='';$('due').value='';toast('✅ تم تسجيل الدين');
+function getDebts() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch (e) {
+    return [];
+  }
 }
 
-// السداد والشطب
-function openPayModal(id){
-  const d = debts.find(x => x.id === id);
-  if(!d) return;
-  const rem = Math.max(0, d.amount - (d.paid || 0));
-  $('payInput').value = rem;
-  $('payId').value = id;
-  $('payModal').classList.add('show');
-  $('payInput').focus();
+function saveDebts(debts) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(debts));
+  renderDebts();
+  updateStats();
 }
-function closePayModal(){ $('payModal').classList.remove('show'); }
-function confirmPayment(){
-  const id = $('payId').value;
-  const val = Number($('payInput').value);
-  if(!val || val <= 0) return toast('أدخل مبلغاً صحيحاً');
-  const d = debts.find(x => x.id === id);
-  if(!d) return;
 
-  d.paid = (d.paid || 0) + val;
-  d.payments = d.payments || [];
-  d.payments.push({ amount: val, date: today() });
+// --- UI & RENDER ---
+let currentFilter = 'all';
 
-  if(d.paid >= d.amount) {
-    d.closed = true;
-    d.paid = d.amount; // معادلة المبلغ
+function formatMoney(amount) {
+  return Number(amount || 0).toLocaleString('en-US') + ' ر.ي';
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.innerText = msg;
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 3000);
+}
+
+function updateStats() {
+  const debts = getDebts();
+  let total = 0, paid = 0;
+  debts.forEach(d => {
+    total += Number(d.amount) || 0;
+    paid += Number(d.paid) || 0;
+  });
+  document.getElementById('statTotal').innerText = formatMoney(total);
+  document.getElementById('statPaid').innerText = formatMoney(paid);
+  document.getElementById('statRemaining').innerText = formatMoney(total - paid);
+}
+
+function renderDebts() {
+  const debts = getDebts();
+  const search = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const container = document.getElementById('debtsContainer');
+
+  let filtered = debts.filter(d => {
+    const matchSearch = d.name.toLowerCase().includes(search) || (d.notes && d.notes.toLowerCase().includes(search));
+    if (!matchSearch) return false;
+    if (currentFilter === 'remaining') return (d.amount - d.paid) > 0;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty">لا توجد سجلات ديون حالياً</div>';
+    return;
   }
 
-  save(); closePayModal(); toast('✅ تم تسجيل السداد بنجاح');
+  container.innerHTML = filtered.map(d => {
+    const rem = d.amount - d.paid;
+    const isClosed = rem <= 0;
+    return `
+      <div class="debt ${isClosed ? 'closed' : ''}">
+        <div class="debt-info">
+          <div>
+            <b>${d.name}</b>
+            <small>${d.notes ? d.notes + ' • ' : ''}${d.date}</small>
+          </div>
+          <div class="amount">
+            <b>${formatMoney(d.amount)}</b>
+            <div class="remaining">${isClosed ? 'تم السداد بالكامل' : 'المتبقي: ' + formatMoney(rem)}</div>
+          </div>
+        </div>
+        <div class="actions">
+          ${isClosed 
+            ? `<div class="badge">✓ مسدد بالكامل</div>
+               <button class="delete-btn" onclick="deleteDebt('${d.id}')">🗑️ حذف الدين</button>`
+            : `<button class="pay-btn" onclick="openPayModal('${d.id}')">💳 سداد دفعة</button>
+               <button class="delete-btn" onclick="deleteDebt('${d.id}')">🗑️ حذف</button>`
+          }
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function render(){
- const q=$('search').value.trim().toLowerCase();
- const arr=debts.filter(d=>d.name.toLowerCase().includes(q));
- $('list').innerHTML=arr.length?arr.map(d=>{
-   const rem=Math.max(0,d.amount-(d.paid||0));
-   const isClosed = d.closed || rem === 0;
-   return `<div class="debt ${isClosed ? 'closed' : ''}">
-    <div class="debt-info">
-      <div><b>${esc(d.name)}</b><small>${d.date}${d.dueDate?' • استحقاق '+d.dueDate:''}</small></div>
-      <div class="amount"><b>${money(d.amount)}</b><div class="remaining">المتبقي: ${money(rem)}</div></div>
-    </div>
-    ${!isClosed ? `<button class="pay-btn" onclick="openPayModal('${d.id}')">💳 سداد / شطب</button>` : `<div class="badge">✔️ مشطوب (تم السداد كاملاً)</div>`}
-   </div>`;
- }).join(''):'<div class="empty">📭 لا توجد ديون مسجلة</div>';
-
- let total=0,paid=0;
- debts.forEach(d=>{
-   if(!d.closed){total+=+d.amount;paid+=+(d.paid||0)}
- });
- $('sDebt').textContent=money(total);$('sPaid').textContent=money(paid);$('sRemain').textContent=money(total-paid);
+// --- ACTIONS ---
+function openAddModal() {
+  document.getElementById('addName').value = '';
+  document.getElementById('addAmount').value = '';
+  document.getElementById('addNotes').value = '';
+  document.getElementById('addModal').classList.add('show');
 }
 
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function showDebts(){$('listPanel').scrollIntoView({behavior:'smooth'})}
+function openPayModal(id) {
+  const debts = getDebts();
+  const debt = debts.find(d => d.id === id);
+  if (!debt) return;
 
-let recognition=null;
-function startVoice(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){toast('المتصفح لا يدعم الإدخال الصوتي. استخدم Chrome أو Edge.');return}
- recognition=new SR();recognition.lang='ar-YE';recognition.interimResults=false;recognition.maxAlternatives=1;
- $('voiceBtn').classList.add('listening');$('voiceBtn').innerHTML='🟢 جاري التسجيل...<small>تحدث الآن: أضف أحمد 5000</small>';
- recognition.onresult=e=>{ const text=e.results[0][0].transcript.trim(); parseVoice(text); };
- recognition.onerror=()=>{toast('لم أتمكن من سماع الأمر');resetVoice()};
- recognition.onend=resetVoice; recognition.start();
+  const rem = debt.amount - debt.paid;
+  document.getElementById('payDebtId').value = id;
+  document.getElementById('payModalInfo').innerText = `العميل: ${debt.name} (المتبقي: ${formatMoney(rem)})`;
+  document.getElementById('payAmount').value = rem; // الافتراضي هو كامل المتبقي
+  document.getElementById('payModal').classList.add('show');
 }
-function resetVoice(){$('voiceBtn').classList.remove('listening');$('voiceBtn').innerHTML='🎙️ إضافة بالصوت<small>اضغط وتحدث بوضوح</small>'}
-function normalizeDigits(s){
- const ar='٠١٢٣٤٥٦٧٨٩', fa='۰۱۲۳۴۵۶۷۸۹';
- return s.replace(/[٠-٩]/g,d=>ar.indexOf(d)).replace(/[۰-۹]/g,d=>fa.indexOf(d));
-}
-function parseVoice(text){
- const t=normalizeDigits(text);
- const nums=t.match(/[\d][\d,.\s]*/g);
- if(!nums){toast('لم أجد مبلغاً في الكلام.');return}
- const raw=nums[nums.length-1].replace(/[,\s]/g,'');
- const amount=parseFloat(raw);
- if(!amount){toast('المبلغ غير واضح');return}
- let name=t.replace(nums[nums.length-1],'').replace(/^(أضف|اضف|دين|سجل|سجّل|لـ|ل)/,'').trim();
- if(!name)name='مدين جديد';
- $('heard').textContent='سمعت: «'+text+'»';
- $('vName').value=name;$('vAmount').value=amount;$('voiceModal').classList.add('show');
-}
-function closeVoice(){$('voiceModal').classList.remove('show')}
-function saveVoice(){
- const n=$('vName').value.trim(),a=Number($('vAmount').value);
- if(!n||!a||a<=0)return toast('راجع الاسم والمبلغ');
- debts.unshift({id:Date.now().toString(),name:n,amount:a,paid:0,date:today(),dueDate:'',payments:[],closed:false,source:'voice'});
- save();closeVoice();toast('✅ تم تسجيل الدين');
-}
-render();
 
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'}).catch(()=>{}));
-let deferredInstallPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); deferredInstallPrompt = e;
-  const b=document.getElementById('installBtn'); if(b) b.style.display='block';
-});
-async function installApp(){
-  if(!deferredInstallPrompt){ toast('افتح قائمة المتصفح واختر تثبيت التطبيق.'); return; }
-  deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt=null;
-  const b=document.getElementById('installBtn'); if(b) b.style.display='none';
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
 }
-window.addEventListener('appinstalled',()=>{
-  const b=document.getElementById('installBtn'); if(b) b.style.display='none'; toast('✅ تم تثبيت التطبيق');
-});
+
+function saveNewDebt() {
+  const name = document.getElementById('addName').value.trim();
+  const amount = parseFloat(document.getElementById('addAmount').value);
+  const notes = document.getElementById('addNotes').value.trim();
+
+  if (!name || isNaN(amount) || amount <= 0) {
+    showToast('يرجى كتابة الاسم والمبلغ بشكل صحيح');
+    return;
+  }
+
+  const debts = getDebts();
+  const newDebt = {
+    id: Date.now().toString(),
+    name,
+    amount,
+    paid: 0,
+    notes,
+    date: new Date().toLocaleDateString('ar-YE', { year: 'numeric', month: 'short', day: 'numeric' })
+  };
+
+  debts.unshift(newDebt);
+  saveDebts(debts);
+  closeModal('addModal');
+  showToast('تمت إضافة الدين بنجاح');
+}
+
+function confirmPayment() {
+  const id = document.getElementById('payDebtId').value;
+  const payVal = parseFloat(document.getElementById('payAmount').value);
+
+  if (isNaN(payVal) || payVal <= 0) {
+    showToast('يرجى إدخال مبلغ سداد صحيح');
+    return;
+  }
+
+  let debts = getDebts();
+  const debt = debts.find(d => d.id === id);
+  if (!debt) return;
+
+  debt.paid = (Number(debt.paid) || 0) + payVal;
+  if (debt.paid >= debt.amount) {
+    debt.paid = debt.amount;
+    showToast('تم سداد الدين بالكامل! يمكنك حذفه الآن إذا أردت.');
+  } else {
+    showToast('تم تسجيل الدفعة بنجاح');
+  }
+
+  saveDebts(debts);
+  closeModal('payModal');
+}
+
+// خاصية حذف الدين
+function deleteDebt(id) {
+  if (!confirm('هل تريد بالتأكيد حذف هذا السجل نهائياً؟')) return;
+  let debts = getDebts();
+  debts = debts.filter(d => d.id !== id);
+  saveDebts(debts);
+  showToast('تم حذف الدين بنجاح');
+}
+
+function filterDebts(type) {
+  currentFilter = (currentFilter === type) ? 'all' : type;
+  renderDebts();
+}
+
+// --- VOICE PARSER (OFFLINE / BROWSER-BUILTIN) ---
+function toggleVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    showToast('الميزة الصوتية غير مدعومة في متصفحك الحالي');
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = 'ar-YE';
+  const voiceBtn = document.getElementById('voiceBtn');
+  voiceBtn.classList.add('listening');
+
+  recognition.onresult = (event) => {
+    const text = event.results[0][0].transcript;
+    voiceBtn.classList.remove('listening');
+    parseVoiceText(text);
+  };
+
+  recognition.onerror = () => {
+    voiceBtn.classList.remove('listening');
+    showToast('تعذر التقاط الصوت');
+  };
+
+  recognition.onend = () => {
+    voiceBtn.classList.remove('listening');
+  };
+
+  recognition.start();
+}
+
+function parseVoiceText(text) {
+  // استخراج الأرقام
+  const numbers = text.match(/\d+/g);
+  const amount = numbers ? parseInt(numbers.join('')) : 0;
+  
+  // استخراج الاسم والملاحظة تقريبياً
+  let cleaned = text.replace(/\d+/g, '').replace(/سجل|على|دين|حق|ريال|ألف|الف/g, ' ').trim();
+  openAddModal();
+  if (cleaned) document.getElementById('addName').value = cleaned;
+  if (amount > 0) document.getElementById('addAmount').value = amount;
+  document.getElementById('addNotes').value = text;
+  showToast('تم التعرف على الصوت، تحقق ثم احفظ');
+}
+
+// --- SERVICE WORKER REGISTRATION (OFFLINE PWA) ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('SW Registered'))
+      .catch(err => console.log('SW Failed', err));
+  });
+}
+
+// Initial Load
+updateStats();
+renderDebts();
 </script>
 </body>
 </html>
