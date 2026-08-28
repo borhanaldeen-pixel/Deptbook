@@ -1,57 +1,60 @@
-// Service Worker - دفتر الديون اليمني
-// يوفر عمل التطبيق دون اتصال بالإنترنت (Offline)
+// دفتر الديون اليمني - Service Worker
+// يخزن كل ملفات التطبيق محلياً كي يعمل بدون إنترنت وبدون VPN بعد أول تحميل ناجح.
 
-const CACHE_NAME = 'yemeni-debtbook-cache-v3';
-const ASSETS_TO_CACHE = [
-  './debtbook.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-512-maskable.png',
-  './apple-touch-icon.png',
-  './favicon-32.png'
+const CACHE_VERSION = 'debtbook-v5';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './icon.svg'
 ];
 
-// عند التثبيت: خزّن الملفات الأساسية في الكاش
+// عند التثبيت: خزّن كل ملفات التطبيق فوراً
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
+    caches.open(CACHE_VERSION)
+      .then((cache) => cache.addAll(APP_SHELL))
       .then(() => self.skipWaiting())
   );
 });
 
-// عند التفعيل: احذف أي نسخ كاش قديمة
+// عند التفعيل: احذف أي نسخ قديمة من الكاش
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+        keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k))
       )
     ).then(() => self.clients.claim())
   );
 });
 
-// عند كل طلب: حاول الشبكة أولاً، وإن فشلت استخدم الكاش (مفيد لصفحة الخطوط الخارجية أيضاً)
+// استراتيجية: الكاش أولاً، ثم الشبكة كخيار احتياطي فقط
+// وأي طلب تصفح (navigation) يرجع دائماً لصفحة index.html من الكاش حتى لو تعذر الاتصال
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  const { request } = event;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      caches.match('./index.html').then((cached) => {
+        return cached || fetch(request).catch(() => caches.match('./index.html'));
+      })
+    );
+    return;
+  }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const networkFetch = fetch(event.request)
-        .then((networkResponse) => {
-          // خزّن نسخة محدثة من الملفات المحلية فقط
-          if (event.request.url.startsWith(self.location.origin)) {
-            const clone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+      return fetch(request)
+        .then((response) => {
+          if (response && response.status === 200 && request.method === 'GET') {
+            const clone = response.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put(request, clone));
           }
-          return networkResponse;
+          return response;
         })
-        .catch(() => cachedResponse);
-
-      return cachedResponse || networkFetch;
+        .catch(() => cached);
     })
   );
 });
